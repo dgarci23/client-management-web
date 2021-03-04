@@ -1,0 +1,19 @@
+{
+  "name": "client-management-web",
+  "version": "1.0.0",
+  "description": "Webpage for Client Management",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgarci23/client-management-web.git"
+  },
+  "author": "David Garcia Gonzalez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dgarci23/client-management-web/issues"
+  },
+  "homepage": "https://github.com/dgarci23/client-management-web#readme"
+}
