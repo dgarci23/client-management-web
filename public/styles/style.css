@@ -1,0 +1,72 @@
+/* Orange: EF6D1F*/
+/* Red: ED1546*/
+/* Blue: 0AAB9B*/
+/* Purple: AB1F75*/
+
+/* Body */
+body {
+    background: rgb(255,228,226);
+    background: linear-gradient(90deg, rgba(255,228,226,1) 0%, rgba(239,79,79,1) 72%, rgba(237,21,70,1) 100%);
+}
+
+/* App */
+.app {
+
+    /* Font */
+    font-family: "Roboto", "sans-serif";
+
+    /* Structure */
+    padding: 1%;
+    margin: 1% auto;
+
+    /* Border */
+    border-radius: 15px;
+
+    /* Color */
+    background-color: #FFE4E2;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 50px;
+    color: #ED1546;
+
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.navbar-brand:hover {
+    color: #ED1546;
+}
+
+.navbar-logo {
+    height: 100px;
+}
+
+/* Card Current Client */
+.card {
+    background-color: #ffcda3;
+    
+    /* Border */
+    border-radius: 15px;
+}
+
+.button {
+    background-color: #ef4f4f;
+
+    border: 5px;
+
+    color: #fff;
+
+}
+
+.button:disabled {
+    opacity: 1;
+}
+
+.btn-group {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dgarci23/client-management-web/issues"
   },
-  "homepage": "https://github.com/dgarci23/client-management-web#readme"
+  "homepage": "https://github.com/dgarci23/client-management-web#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
