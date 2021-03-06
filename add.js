@@ -28,37 +28,16 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-app.get('/', (req, res) => {
+bcrypt.hash("Password", 10, (err, hash) => {
 
-    res.sendFile(__dirname + "/public/views/login.html");
 
-});
-
-app.post('/', (req, res) => {
-
-    const user = req.body.user;
-    const password = req.body.password;
-
-    User.findOne({user: user}, (err, userFound)=>{
-
-        if (!err) {
-            if (userFound) {
-
-                bcrypt.compare(password, userFound.password, (err, check) => {
     
-                    if (check) {
-                        res.sendFile(__dirname + "/public/views/clients.html");
-                    } else {
-                        res.redirect('/');
-                    }
-                });
-            } else {
-                res.redirect('/');
-            }
-        }
+    const newUser = new User({
+        user: "David Garcia Gonzalez",
+        password: hash,
+        privilege: "Admin",
+        branch: "Avenida B"
     });
+    
+    newUser.save();
 });
-
-
-// Listening on port
-app.listen(3000, () => console.log("Listening on port 3000."));
