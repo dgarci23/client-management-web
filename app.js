@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); 
+const gs = require("./google");
 
 // Initialize App
 const app = express();
@@ -25,6 +26,7 @@ const userSchema = new mongoose.Schema({
     branch: String
 
 });
+
 
 const User = mongoose.model('User', userSchema);
 
@@ -58,6 +60,16 @@ app.post('/', (req, res) => {
         }
     });
 });
+
+app.get('/new', (req, res) => {
+
+    const range = "Form Responses 2!A2:AQ2";
+
+    gs.gsget(range).then((data) => res.send(data.data.values));
+
+    
+
+})
 
 
 // Listening on port

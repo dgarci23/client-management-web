@@ -1,25 +1,53 @@
-const fs = require('fs');
-const readline = require('readline');
-const {GoogleSpreadsheet} = require("google-spreadsheet");
-const {promisify} = require("util");
+require("dotenv").config();
+const {google} = require("googleapis");
 
-const creds = require("./creds.json");
+const TOKEN_PATH = "token.json";
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
+const fixedKey = process.env.GOOGLE_SERVICE_PRIVATE_KEY.replace(new RegExp("\\\\n", "\g"), "\n")
+const client = new google.auth.JWT(process.env.CLIENT_EMAIL, null, fixedKey,SCOPES);
 
-async function accessSpreadsheet() {
-    const doc = new GoogleSpreadsheet("1by1-9FXUU7Rd1YwdgW5CtmLvtnMrVsEN45IAuYAjlEU");
-
-    await doc.useServiceAccountAuth({
-        client_email: creds.client_email,
-        private_key: creds.private_key
-    });
+client.authorize(function(error,tokens){
+    if(error){console.log(error);return;}
+    else
+    {console.log("connected…");}
+});
 
 
-    await doc.loadInfo();
+async function gsupdate(range, values){ //cl for client
+    const gsapi=google.sheets({version:"v4", auth:client });
+    
+    
+    const updateoptions={
+        spreadsheetId: process.env.PEDIDOS_ID,
+        range:`${range}`,
+        valueInputOption: "USER_ENTERED",
+        resource:{values: values}
+    };
 
-    const sheet = doc.sheetsByIndex[0];
-
-    const data = sheet.getCell(0,0);
-    console.log(data);
+    let resp = await gsapi.spreadsheets.values.update(updateoptions);
 }
 
-accessSpreadsheet();
+
+async function gsget(range){
+    const gsapi=google.sheets({version:"v4", auth: client });
+    const opt={
+        spreadsheetId: process.env.PEDIDOS_ID,
+        range:`${range}`
+    };
+    
+    let dataObtained = await gsapi.spreadsheets.values.get(opt);
+
+    return dataObtained;
+
+}
+
+module.exports = {
+    
+    gsget: gsget,
+
+    gsupdate: gsupdate
+
+}
+
+
+
