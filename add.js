@@ -33,7 +33,7 @@ bcrypt.hash("Password", 10, (err, hash) => {
 
     
     const newUser = new User({
-        user: "David Garcia Gonzalez",
+        user: "dgarci23",
         password: hash,
         privilege: "Admin",
         branch: "Avenida B"
