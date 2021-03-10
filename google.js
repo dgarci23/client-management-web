@@ -114,19 +114,19 @@ async function gsappendclient(range, values){
 
 async function gswriteclient(){
 
+    let data = [];
+
     await gsnewclient().then((promise) => {
 
-        const data = promise.data.values;
+        data = promise.data.values;
 
-        gsappendclient("Sheet1!A2:AQ2", data).then(()=>{
+        gsappendclient("Sheet1!A2:AQ2", data);
 
-            gsdeleteclient();
-
-        });
+        gsdeleteclient();
 
     });
 
-    return await gsget("Sheet1!A2:AQ2", process.env.RECEIVE_ID);
+    return data[0];
 
 }
 
@@ -139,6 +139,3 @@ module.exports = {
     gswriteclient: gswriteclient
 
 }
-
-const data = gswriteclient();
-data.then((data) => console.log(data.data.values));

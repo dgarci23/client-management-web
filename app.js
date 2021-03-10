@@ -75,11 +75,7 @@ app.post('/', (req, res) => {
 
 app.post('/new', (req, res) => {
 
-    const range = "Form Responses 2!A2:AQ2";
-
-    gs.gsget(range).then((promise) => {
-
-        const data = promise.data.values[0];
+    gs.gswriteclient().then((data) => {
 
 
         const user = {
