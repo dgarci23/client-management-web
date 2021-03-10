@@ -41,6 +41,7 @@ const clientSchema = new mongoose.Schema({
 
 
 const User = mongoose.model('User', userSchema);
+const Client = mongoose.model("Client", clientSchema);
 
 app.get('/', (req, res) => {
 
@@ -58,11 +59,16 @@ app.post('/', (req, res) => {
         if (!err) {
             if (userFound) {
 
-                bcrypt.compare(password, userFound.password, (err, check) => {
+                bcrypt.compare(password, userFound.password, (error, check) => {
     
-                    if (check) {
-                        res.render("clients", {user: user});
+                    if (!error) {
+                        if (check) {
+                            res.render("clients", {user: user});
+                        } else {
+                            res.redirect('/');
+                        }
                     } else {
+                        console.log(err);
                         res.redirect('/');
                     }
                 });
@@ -77,8 +83,7 @@ app.post('/new', (req, res) => {
 
     gs.gswriteclient().then((data) => {
 
-
-        const user = {
+        const client = new Client({
             name: data[1],
             timestamp: data[0],
             doc_id: data[2],
@@ -86,9 +91,11 @@ app.post('/new', (req, res) => {
             type: data[4],
             branch: data[42],
             user: req.params.user
-        }
+        })
 
-        res.render("clients", {user: user});
+        client.save();
+
+        res.render("clients", {client: client});
 
     });
 
