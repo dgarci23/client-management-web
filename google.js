@@ -12,13 +12,13 @@ client.authorize(function(error,tokens){
     {console.log("connected…");}
 });
 
-
-async function gsupdate(range, values){ //cl for client
+// General GS Sheet functions
+async function gsupdate(range, values, id=process.env.TEST_ID){ //cl for client
     const gsapi=google.sheets({version:"v4", auth:client });
     
     
     const updateoptions={
-        spreadsheetId: process.env.PEDIDOS_ID,
+        spreadsheetId: id,
         range:`${range}`,
         valueInputOption: "USER_ENTERED",
         resource:{values: values}
@@ -27,11 +27,10 @@ async function gsupdate(range, values){ //cl for client
     let resp = await gsapi.spreadsheets.values.update(updateoptions);
 }
 
-
-async function gsget(range){
+async function gsget(range, id=process.env.TEST_ID){
     const gsapi=google.sheets({version:"v4", auth: client });
     const opt={
-        spreadsheetId: process.env.PEDIDOS_ID,
+        spreadsheetId: id,
         range:`${range}`
     };
     
@@ -41,13 +40,105 @@ async function gsget(range){
 
 }
 
+// Client-specific GS Sheet functions
+async function gsnewclient(){
+
+    const gsapi = google.sheets({version:"v4", auth: client});
+    const opt={
+        spreadsheetId: process.env.TEST_ID,
+        range:`Sheet1!A2:AQ2`
+    };
+
+    let dataObtained = await gsapi.spreadsheets.values.get(opt);
+
+    return dataObtained;
+
+}
+
+async function gsdeleteclient(){
+
+    const gsapi = google.sheets({version:"v4", auth: client});
+    const opt={
+        spreadsheetId: process.env.TEST_ID,
+        resource: {
+            "requests": 
+            [
+              {
+                "deleteRange": 
+                {
+                  "range": 
+                  {
+                    "sheetId": 0, // gid
+                    "startRowIndex": 1,
+                    "endRowIndex": 2
+                  },
+                  "shiftDimension": "ROWS"
+                }
+              }
+            ]
+          }
+
+    };
+
+    await gsapi.spreadsheets.batchUpdate(opt);
+
+    return "Success";
+}
+
+async function gsappendclient(range, values){
+
+    const gsapi = google.sheets({version:"v4", auth: client});
+    const opt_newRows = {
+        spreadsheetId: process.env.RECEIVE_ID,
+        resource:{
+            requests: [{
+                insertDimension: {
+                    range: {
+                        sheetId: 0,
+                        dimension: "ROWS",
+                        startIndex: 1,
+                        endIndex: 2
+                    }
+                }
+            }]
+        }
+    }
+
+    await gsapi.spreadsheets.batchUpdate(opt_newRows);
+
+    await gsupdate("Sheet1!A2:AQ2", values, process.env.RECEIVE_ID);
+
+    return "Success";
+
+}
+
+async function gswriteclient(){
+
+    await gsnewclient().then((promise) => {
+
+        const data = promise.data.values;
+
+        gsappendclient("Sheet1!A2:AQ2", data).then(()=>{
+
+            gsdeleteclient();
+
+        });
+
+    });
+
+    return await gsget("Sheet1!A2:AQ2", process.env.RECEIVE_ID);
+
+}
+
 module.exports = {
     
     gsget: gsget,
 
-    gsupdate: gsupdate
+    gsupdate: gsupdate,
+
+    gswriteclient: gswriteclient
 
 }
 
-
-
+const data = gswriteclient();
+data.then((data) => console.log(data.data.values));
