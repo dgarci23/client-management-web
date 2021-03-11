@@ -5,7 +5,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require("ejs");
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); 
+const session = require("express-session");
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
 const gs = require("./google");
 
 // Initialize App
@@ -15,6 +17,15 @@ const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Mongoose connection
 mongoose.connect(`mongodb+srv://dgarci23:${process.env.DB_PASSWORD}@cluster0.vovxs.mongodb.net/clientManagementDB?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -29,6 +40,8 @@ const userSchema = new mongoose.Schema({
 
 });
 
+userSchema.plugin(passportLocalMongoose);
+
 const clientSchema = new mongoose.Schema({
     name: String,
     timestamp: Date,
@@ -41,6 +54,11 @@ const clientSchema = new mongoose.Schema({
 
 
 const User = mongoose.model('User', userSchema);
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 const Client = mongoose.model("Client", clientSchema);
 
 app.get('/', (req, res) => {
@@ -51,31 +69,24 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 
-    const user = req.body.user;
+    const username = req.body.user;
     const password = req.body.password;
 
-    User.findOne({user: user}, (err, userFound)=>{
+    const user = new User({
+        user: username,
+        password: password
+    });
 
-        if (!err) {
-            if (userFound) {
+    req.login(user, (err) => {
 
-                bcrypt.compare(password, userFound.password, (error, check) => {
-    
-                    if (!error) {
-                        if (check) {
-                            res.render("clients", {user: user});
-                        } else {
-                            res.redirect('/');
-                        }
-                    } else {
-                        console.log(err);
-                        res.redirect('/');
-                    }
-                });
-            } else {
-                res.redirect('/');
-            }
+        if (err) {
+            console.log(err);
+        } else {
+            passport.authenticate("local")(req, res, ()=> {
+                res.redirect("clients")
+            })
         }
+
     });
 });
 
