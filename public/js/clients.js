@@ -1,18 +1,30 @@
+let newClient = {};
+let currentClients = [];
+
 // Event listener for new clients
 document.getElementById("new-client-btn").addEventListener("click", (e) => {
 
-    console.log("Clicked");
-
-    let newClient = {};
-
     getNewClient().then((data) => {
-        newClient = data;
 
-        console.log(newClient);
+        if (data) {
 
+            if (Object.keys(newClient).length !==0 ) {
+                currentClients.push(newClient);
 
-        if (newClient) {
+                if (currentClients.length > 7) {
+                    currentClients.shift();
+                }
+            }
+            console.log(currentClients);
+
+            newClient = data;
+
             document.querySelector(".client-information").innerHTML = newClientHTML(newClient);
+
+            console.log(currentClients);
+
+            otherClients();
+
         } else {
             
             showNoClients();
@@ -89,4 +101,29 @@ function clearNoClients() {
 
     document.querySelector(".no-clients-alert").remove();
 
+}
+
+// UI functionality for other clients
+function otherClients() {
+
+    const otherClientsDiv = document.querySelector(".other-clients");
+
+    otherClientsDiv.innerHTML = "";
+
+    currentClients.forEach((client) => {
+
+        otherClientsDiv.innerHTML += otherClientsHTML(client);
+
+    });
+
+}
+
+function otherClientsHTML(client) {
+    return `
+    <div class="btn-group container">
+        <button disabled="disabled" class="btn button">${client.name}</button>
+        <button disabled="disabled" class="btn button">${client.phone}</button>
+        <button disabled="disabled" class="btn button">${client.doc_id}</button>
+        <button disabled="disabled" class="btn button btn-success"><i class="fas fa-exchange-alt"></i></button>
+    </div>`;
 }

@@ -17,6 +17,10 @@
 ### March 12th, 2021
 * Solve empty client response from the backend
 * Pop-up in the frontend when the client
+* Initial solution for the current clients card
+    * Local variable in the frontend with an array of values
+* ! When refreshing, the information gets lost
+    * Solution: Use database to hold clients
 
 ## To Do List
 * Data validation from GS Library
