@@ -69,7 +69,6 @@ passport.deserializeUser(function(id, done) {
   
 const Client = mongoose.model("Client", clientSchema);
 
-let client = {};
 
 app.get('/', (req, res) => {
 
@@ -104,9 +103,9 @@ app.post('/', (req, res) => {
 app.get("/clients", (req, res) => {
     if (req.isAuthenticated()) {
 
-        console.log(req.user.username);
+        // console.log(req.user.username);
 
-        res.render("clients", {client: client});
+        res.render("clients");
 
     } else {
         res.redirect("/");
@@ -118,33 +117,31 @@ app.get("/clients", (req, res) => {
 app.get('/new', (req, res) => {
 
     if (req.isAuthenticated()) {
-        console.log(req.user.username);
         gs.gswriteclient().then((data) => {
-    
-            client = new Client({
-                name: data[1],
-                timestamp: String(data[0]),
-                doc_id: data[2],
-                phone: data[3],
-                type: data[4],
-                branch: data[42],
-                user: req.user.username
-            });
-    
-            client.save();
-    
-            // res.redirect("/clients");
 
-            console.log("Sending data...");
-            res.send(client);
     
+            if (data) {
+                const client = new Client({
+                    name: data[1],
+                    timestamp: String(data[0]),
+                    doc_id: data[2],
+                    phone: data[3],
+                    type: data[4],
+                    branch: data[42],
+                    user: req.user.username
+                });
+        
+                client.save();
+
+                res.send(client);
+
+            } else {
+                res.sendStatus(404);
+            }
         });
     } else {
-        console.log("Not authenticated");
-        //res.redirect("/");
+        res.redirect("/");
     }
-
-
 })
 
 

@@ -120,14 +120,16 @@ async function gswriteclient(){
 
         data = promise.data.values;
 
-        gsappendclient("Sheet1!A2:AQ2", data);
+        if (data !== undefined) {
 
-        gsdeleteclient();
-
+            gsappendclient("Sheet1!A2:AQ2", data);
+    
+            gsdeleteclient();
+        }
     });
 
     if (data===undefined) {
-        return {};
+        return false;
     } else {
         return data[0];
     }

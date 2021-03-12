@@ -16,6 +16,10 @@ Start working on sending client information from backend to frontend
 * Current Solution: use global scope variables in the backend to save the last qeued client
 * New Solution: create a frontend script to handle the requests
 
+### March 12th, 2021
+* Solve empty client response from the backend
+* Pop-up in the frontend when there are no new clients
+
 ## To Do List
 * Data validation from GS Library
 * Pop-ups when there are no new clients
