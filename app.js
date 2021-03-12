@@ -142,4 +142,4 @@ app.post('/', (req, res) => {
 });
 
 // Listening on port
-app.listen(3000, () => console.log("Listening on port 3000."));
+app.listen(3000 || process.env.PORT, () => console.log("Listening on port 3000."));
