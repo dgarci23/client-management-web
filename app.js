@@ -15,15 +15,14 @@ const app = express();
 
 // Set App
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
+// Session setup for Passport Use
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -31,6 +30,7 @@ app.use(passport.session());
 mongoose.connect(`mongodb+srv://dgarci23:${process.env.DB_PASSWORD}@cluster0.vovxs.mongodb.net/clientManagementDB?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // Mongoose schema and model
+// User collection setup with Mongoose
 const userSchema = new mongoose.Schema({
     
     username: String,
@@ -39,9 +39,22 @@ const userSchema = new mongoose.Schema({
     branch: String
 
 });
-
 userSchema.plugin(passportLocalMongoose);
 
+const User = mongoose.model('User', userSchema);
+
+// Passport Strategy and Serializing
+passport.use(User.createStrategy());
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+
+// Client collection setup with Mongoose
 const clientSchema = new mongoose.Schema({
     name: String,
     timestamp: Date,
@@ -51,31 +64,58 @@ const clientSchema = new mongoose.Schema({
     branch: String,
     user: String,
 });
-
-
-const User = mongoose.model('User', userSchema);
-
-passport.use(User.createStrategy());
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-  
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-      done(err, user);
-    });
-});
-  
 const Client = mongoose.model("Client", clientSchema);
 
 
+// Routes
+// GET
 app.get('/', (req, res) => {
 
     res.render("login");
 
 });
 
+app.get("/clients", (req, res) => {
+    if (req.isAuthenticated()) {
+        
+        res.render("clients");
+        
+    } else {
+        res.redirect("/");
+    }
+});
+
+app.get('/new', (req, res) => {
+    
+    if (req.isAuthenticated()) {
+        gs.gswriteclient().then((data) => {
+            
+            
+            if (data) {
+                const client = new Client({
+                    name: data[1],
+                    timestamp: String(data[0]),
+                    doc_id: data[2],
+                    phone: data[3],
+                    type: data[4],
+                    branch: data[42],
+                    user: req.user.username
+                });
+                
+                client.save();
+                
+                res.send(client);
+                
+            } else {
+                res.sendStatus(404);
+            }
+        });
+    } else {
+        res.redirect("/");
+    }
+})
+
+// POST
 app.post('/', (req, res) => {
 
     const username = req.body.username;
@@ -99,51 +139,6 @@ app.post('/', (req, res) => {
 
     });
 });
-
-app.get("/clients", (req, res) => {
-    if (req.isAuthenticated()) {
-
-        // console.log(req.user.username);
-
-        res.render("clients");
-
-    } else {
-        res.redirect("/");
-    }
-});
-
-
-
-app.get('/new', (req, res) => {
-
-    if (req.isAuthenticated()) {
-        gs.gswriteclient().then((data) => {
-
-    
-            if (data) {
-                const client = new Client({
-                    name: data[1],
-                    timestamp: String(data[0]),
-                    doc_id: data[2],
-                    phone: data[3],
-                    type: data[4],
-                    branch: data[42],
-                    user: req.user.username
-                });
-        
-                client.save();
-
-                res.send(client);
-
-            } else {
-                res.sendStatus(404);
-            }
-        });
-    } else {
-        res.redirect("/");
-    }
-})
-
 
 // Listening on port
 app.listen(3000, () => console.log("Listening on port 3000."));

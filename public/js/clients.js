@@ -1,3 +1,4 @@
+// Event listener for new clients
 document.getElementById("new-client-btn").addEventListener("click", (e) => {
 
     console.log("Clicked");
@@ -22,6 +23,7 @@ document.getElementById("new-client-btn").addEventListener("click", (e) => {
 
 });
 
+// Get the new clients from the backend
 async function getNewClient() {
     let response = await fetch("/new");
 
@@ -34,10 +36,10 @@ async function getNewClient() {
         return false;
     }
 
-
     return response;
 }
 
+// This is the HTML code of the new client information
 function newClientHTML(newClient) {
     return `
     <div class="btn-group container">
@@ -66,19 +68,23 @@ function newClientHTML(newClient) {
     </div>`;
 }
 
+// Pop-up alert when there are no new clients
 function showNoClients() {
 
     const noClientsDiv = document.createElement("div");
+    const newClientCard = document.querySelector(".new-client-card");
+    const newClientInfo = document.querySelector(".client-information");
 
     noClientsDiv.className = "alert alert-danger no-clients-alert";
 
     noClientsDiv.appendChild(document.createTextNode("No hay nuevos clientes disponibles."));
     
-    document.querySelector(".new-client-card").insertBefore(noClientsDiv, document.querySelector(".client-information"));
+    newClientCard.insertBefore(noClientsDiv, newClientInfo);
 
     setTimeout(clearNoClients, 3000);
 }
 
+// Removes the pop-up
 function clearNoClients() {
 
     document.querySelector(".no-clients-alert").remove();
