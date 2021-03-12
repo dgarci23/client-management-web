@@ -126,7 +126,11 @@ async function gswriteclient(){
 
     });
 
-    return data[0];
+    if (data===undefined) {
+        return {};
+    } else {
+        return data[0];
+    }
 
 }
 

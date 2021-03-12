@@ -67,8 +67,9 @@ passport.deserializeUser(function(id, done) {
     });
 });
   
-
 const Client = mongoose.model("Client", clientSchema);
+
+let client = {};
 
 app.get('/', (req, res) => {
 
@@ -92,6 +93,7 @@ app.post('/', (req, res) => {
             console.log(err);
         } else {
             passport.authenticate("local")(req, res, ()=> {
+
                 res.redirect("/clients");
             })
         }
@@ -101,31 +103,47 @@ app.post('/', (req, res) => {
 
 app.get("/clients", (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("clients", {});
+
+        console.log(req.user.username);
+
+        res.render("clients", {client: client});
+
+    } else {
+        res.redirect("/");
     }
 });
 
 
 
-app.post('/new', (req, res) => {
+app.get('/new', (req, res) => {
 
-    gs.gswriteclient().then((data) => {
+    if (req.isAuthenticated()) {
+        console.log(req.user.username);
+        gs.gswriteclient().then((data) => {
+    
+            client = new Client({
+                name: data[1],
+                timestamp: String(data[0]),
+                doc_id: data[2],
+                phone: data[3],
+                type: data[4],
+                branch: data[42],
+                user: req.user.username
+            });
+    
+            client.save();
+    
+            // res.redirect("/clients");
 
-        const client = new Client({
-            name: data[1],
-            timestamp: data[0],
-            doc_id: data[2],
-            phone: data[3],
-            type: data[4],
-            branch: data[42],
-            user: req.params.user
-        })
+            console.log("Sending data...");
+            res.send(client);
+    
+        });
+    } else {
+        console.log("Not authenticated");
+        //res.redirect("/");
+    }
 
-        client.save();
-
-        res.render("clients", {client: client});
-
-    });
 
 })
 
