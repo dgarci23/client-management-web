@@ -9,6 +9,7 @@ const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const gs = require("./google");
+const MongoStore = require("connect-mongo");
 
 // Initialize App
 const app = express();
@@ -21,6 +22,9 @@ app.set("view engine", "ejs");
 // Session setup for Passport Use
 app.use(session({
     secret: process.env.SECRET,
+    store: MongoStore.create({
+        mongoUrl: `mongodb+srv://dgarci23:${process.env.DB_PASSWORD}@cluster0.vovxs.mongodb.net/clientManagementDB?retryWrites=true&w=majority`
+    }),
     resave: false,
     saveUninitialized: false
 }));

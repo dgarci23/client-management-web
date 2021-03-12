@@ -52,7 +52,7 @@ async function getNewClient() {
 }
 
 // This is the HTML code of the new client information
-function newClientHTML(newClient) {
+function newClientHTML() {
     return `
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="far fa-clock"></i></button>
