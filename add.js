@@ -33,7 +33,7 @@ mongoose.connect(`mongodb+srv://dgarci23:${process.env.DB_PASSWORD}@cluster0.vov
 // Mongoose schema and model
 const userSchema = new mongoose.Schema({
     
-    user: String,
+    username: String,
     password: String,
     privilege: String,
     branch: String

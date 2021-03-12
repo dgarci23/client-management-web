@@ -33,7 +33,7 @@ mongoose.connect(`mongodb+srv://dgarci23:${process.env.DB_PASSWORD}@cluster0.vov
 // Mongoose schema and model
 const userSchema = new mongoose.Schema({
     
-    user: String,
+    username: String,
     password: String,
     privilege: String,
     branch: String
@@ -56,8 +56,17 @@ const clientSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+  
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+      done(err, user);
+    });
+});
+  
 
 const Client = mongoose.model("Client", clientSchema);
 
@@ -69,11 +78,11 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 
-    const username = req.body.user;
+    const username = req.body.username;
     const password = req.body.password;
 
     const user = new User({
-        user: username,
+        username: username,
         password: password
     });
 
@@ -83,12 +92,20 @@ app.post('/', (req, res) => {
             console.log(err);
         } else {
             passport.authenticate("local")(req, res, ()=> {
-                res.redirect("clients")
+                res.redirect("/clients");
             })
         }
 
     });
 });
+
+app.get("/clients", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("clients", {});
+    }
+});
+
+
 
 app.post('/new', (req, res) => {
 
