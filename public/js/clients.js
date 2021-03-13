@@ -34,12 +34,11 @@ document.getElementById("new-client-btn").addEventListener("click", (e) => {
 
             if (Object.keys(newClient).length !==0 ) {
                 currentClients.push(newClient);
-
-                if (currentClients.length > 7) {
-                    currentClients.shift();
-                }
             }
-
+            if (currentClients.length > 7) {
+                currentClients.shift();
+            }
+            
             newClient = data;
 
             document.querySelector(".client-information").innerHTML = newClientHTML();

@@ -26,7 +26,6 @@
 
 ## To Do List
 * Data validation from GS Library
-* Pop-ups when there are no new clients
 * Possibility of refreshing page every certain time
 * Loading clients when the user logs in
 * Changing current client status
