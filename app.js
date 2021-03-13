@@ -41,8 +41,9 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String,
     privilege: String,
-    branch: String
-
+    branch: String,
+    clients: [Object],
+    mainClient: Object
 });
 userSchema.plugin(passportLocalMongoose);
 
@@ -106,6 +107,23 @@ app.get('/new', (req, res) => {
                     branch: data[42],
                     user: req.user.username
                 });
+
+                User.findById(req.user.id, (err, foundUser) => {
+
+                    if (foundUser.mainClient !== null) {
+
+                        if (foundUser.clients.length > 7) {
+                            foundUser.clients.shift();
+                        }
+    
+                        foundUser.clients.push(foundUser.mainClient);
+                    }
+
+                    foundUser.mainClient = client;
+
+                    foundUser.save();
+
+                });
                 
                 client.save();
                 
@@ -118,6 +136,33 @@ app.get('/new', (req, res) => {
     } else {
         res.redirect("/");
     }
+});
+
+app.get("/user", (req, res) => {
+
+    if (req.isAuthenticated()) {
+
+        const id = req.user.id;
+
+        User.findById(id, (err, userFound) => {
+
+            if (err) {
+                console.log(err);
+            } else {
+                const clientInfo = {
+                    mainClient: userFound.mainClient,
+                    clients: userFound.clients
+                };
+
+                res.send(clientInfo);
+            }
+
+        })
+
+    } else {
+        res.redirect("/");
+    }
+
 })
 
 // POST

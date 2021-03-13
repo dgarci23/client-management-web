@@ -1,6 +1,30 @@
 let newClient = {};
 let currentClients = [];
 
+// Event listener for DOM loaded
+document.addEventListener("DOMContentLoaded", ()=>{
+
+    getClients().then((data) => {
+
+        currentClients = data.clients;
+        newClient = data.mainClient;
+
+        otherClients();
+        
+        document.querySelector(".client-information").innerHTML = newClientHTML();
+
+    });
+
+});
+
+async function getClients() {
+
+    const response = await fetch("/user");
+
+    return response.json();
+
+}
+
 // Event listener for new clients
 document.getElementById("new-client-btn").addEventListener("click", (e) => {
 
@@ -15,13 +39,10 @@ document.getElementById("new-client-btn").addEventListener("click", (e) => {
                     currentClients.shift();
                 }
             }
-            console.log(currentClients);
 
             newClient = data;
 
-            document.querySelector(".client-information").innerHTML = newClientHTML(newClient);
-
-            console.log(currentClients);
+            document.querySelector(".client-information").innerHTML = newClientHTML();
 
             otherClients();
 
@@ -109,9 +130,9 @@ function otherClients() {
     const otherClientsDiv = document.querySelector(".other-clients");
 
     otherClientsDiv.innerHTML = "";
-
+    
     currentClients.forEach((client) => {
-
+        
         otherClientsDiv.innerHTML += otherClientsHTML(client);
 
     });

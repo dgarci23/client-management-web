@@ -22,7 +22,7 @@
 * ! When refreshing, the information gets lost
     * Solution: Use database to hold clients
 * Heroku Deployment
-    * Need a Store for the sessions (https://www.npmjs.com/package/connect-mongo)
+    * Need a Store for the [sessions](https://www.npmjs.com/package/connect-mongo)
 
 ## To Do List
 * Data validation from GS Library
