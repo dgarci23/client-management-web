@@ -100,7 +100,7 @@ app.get('/new', (req, res) => {
             if (data) {
                 const client = new Client({
                     name: data[1],
-                    timestamp: String(data[0]),
+                    timestamp: data[0].toString(),
                     doc_id: data[2],
                     phone: data[3],
                     type: data[4],
@@ -112,7 +112,7 @@ app.get('/new', (req, res) => {
 
                     if (foundUser.mainClient !== null) {
 
-                        if (foundUser.clients.length > 7) {
+                        while (foundUser.clients.length > 7) {
                             foundUser.clients.shift();
                         }
     
@@ -162,7 +162,11 @@ app.get("/user", (req, res) => {
     } else {
         res.redirect("/");
     }
+});
 
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
 })
 
 // POST
@@ -181,10 +185,7 @@ app.post('/', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            passport.authenticate("local")(req, res, ()=> {
-
-                res.redirect("/clients");
-            })
+            passport.authenticate("local", {failureRedirect: "/", successRedirect: "/clients"})(req, res, ()=> {});
         }
 
     });

@@ -45,12 +45,26 @@ body {
     height: 100px;
 }
 
+.logout-icon {
+    color:#ED1546;
+}
+
 /* Card Current Client */
 .card {
     background-color: #ffcda3;
     
-    /* Border */
-    border-radius: 15px;
+    /* Spacing */
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.current-client {
+    margin-left: 20px;
+}
+
+.client-list {
+    margin-right: 20px;
 }
 
 .button {
@@ -70,3 +84,13 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+.other-client-btn {
+    width: 150px;
+    text-align:center;
+}
+
+.main-client-btn {
+    width: 95%;
+}
+

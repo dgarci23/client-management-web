@@ -24,6 +24,12 @@
 * Heroku Deployment
     * Need a Store for the [sessions](https://www.npmjs.com/package/connect-mongo)
 
+### March 13th, 2021
+* Solve the issue that allowed more than 7 clients at the same time
+* Implement logout
+* Styling to center buttons
+* Redirect when failed login
+
 ## To Do List
 * Data validation from GS Library
 * Possibility of refreshing page every certain time

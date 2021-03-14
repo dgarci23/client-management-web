@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
     getClients().then((data) => {
 
         currentClients = data.clients;
+        while (currentClients.length > 7) {
+            currentClients.shift();
+        }
+
         newClient = data.mainClient;
 
         otherClients();
@@ -35,7 +39,7 @@ document.getElementById("new-client-btn").addEventListener("click", (e) => {
             if (Object.keys(newClient).length !==0 ) {
                 currentClients.push(newClient);
             }
-            if (currentClients.length > 7) {
+            while (currentClients.length > 7) {
                 currentClients.shift();
             }
             
@@ -76,27 +80,27 @@ function newClientHTML() {
     return `
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="far fa-clock"></i></button>
-        <button disabled="disabled" class="btn button">${newClient.timestamp}</button>
+        <button disabled="disabled" class="btn button main-client-btn">${newClient.timestamp.substring(0,10)}</button>
     </div>
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="fas fa-phone-alt"></i></button>
-        <button disabled="disabled" class="btn button">${newClient.phone}</button>
+        <button disabled="disabled" class="btn button main-client-btn">${newClient.phone}</button>
     </div>
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="far fa-user"></i></button>
-        <button disabled="disabled" class="btn button">${newClient.name}</button>
+        <button disabled="disabled" class="btn button main-client-btn">${newClient.name}</button>
     </div>
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="fas fa-id-card"></i></button>
-        <button disabled="disabled" class="btn button">${newClient.doc_id}</button>
+        <button disabled="disabled" class="btn button main-client-btn">${newClient.doc_id}</button>
     </div>
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="fas fa-loveseat"></i></button>
-        <button disabled="disabled" class="btn button">${newClient.type}</button>
+        <button disabled="disabled" class="btn button main-client-btn">${newClient.type}</button>
     </div>
     <div class="btn-group container">
         <button disabled="disabled" class="btn button"><i class="fas fa-building"></i></button>
-        <button disabled="disabled" class="btn button">${newClient.branch}</button>
+        <button disabled="disabled" class="btn button main-client-btn">${newClient.branch}</button>
     </div>`;
 }
 
@@ -139,11 +143,13 @@ function otherClients() {
 }
 
 function otherClientsHTML(client) {
+
+    // <button disabled="disabled" class="btn button btn-success"><i class="fas fa-exchange-alt"></i></button>
+
     return `
     <div class="btn-group container">
-        <button disabled="disabled" class="btn button">${client.name}</button>
-        <button disabled="disabled" class="btn button">${client.phone}</button>
-        <button disabled="disabled" class="btn button">${client.doc_id}</button>
-        <button disabled="disabled" class="btn button btn-success"><i class="fas fa-exchange-alt"></i></button>
+        <button disabled="disabled" class="btn button other-client-btn">${client.name}</button>
+        <button disabled="disabled" class="btn button other-client-btn">${client.phone}</button>
+        <button disabled="disabled" class="btn button other-client-btn">${client.doc_id}</button>
     </div>`;
 }
