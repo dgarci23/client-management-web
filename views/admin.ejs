@@ -25,11 +25,11 @@
             <a href="/logout"><i class="fas fa-power-off fa-3x logout-icon"></i></a>
         </div>
     
-        <ul class="nav">
-            <% users.forEach((user) => {}) %>
-                <li class="nav-item"><%= user.username %></li> 
+        <nav class="nav justify-content-center">
+            <% users.forEach((user) => { %>
+                <a href=<%= "/" + user.username %> class="nav-link active"><button class="btn button"><%= user.username %></button></a>
             <% }); %>
-        </ul>
+        </nav>
 
 
     </div>

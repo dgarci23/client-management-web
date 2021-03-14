@@ -172,8 +172,10 @@ app.get("/logout", (req, res) => {
 app.get("/admin", (req, res) => {
     if (req.isAuthenticated()) {
 
-        Users.findAll({privilege: "User"}, (err, usersFound) => {
+        User.find({privilege: "User"}, (err, usersFound) => {
 
+
+            console.log(usersFound);
 
             res.render("admin", {users: usersFound});
 
@@ -209,17 +211,19 @@ app.post('/', (req, res) => {
                 }
             }
         }
+
+        req.login(user, (err) => {
+    
+            if (err) {
+                console.log(err);
+            } else {
+                passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
+            }
+    
+        });
     });
 
-    req.login(user, (err) => {
 
-        if (err) {
-            console.log(err);
-        } else {
-            passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
-        }
-
-    });
 });
 
 // Listening on port
