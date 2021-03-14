@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <link rel="stylesheet" href="../styles/style.css">
+
+    <link rel="shortcut icon" href="../images/LogoCasaConfort.png" type="image/png">
+    <title>Clientes Casa Confort</title>
+</head>
+<body>
+    
+    <div class="container app">
+        <div class="navbar navbar-clients">
+            <a href="#" class="navbar-brand"><img class="navbar-logo" src="../images/LogoCasaConfort.png" alt="Logo Casa Confort"> Casa Confort </a>
+            <a href="/logout"><i class="fas fa-power-off fa-3x logout-icon"></i></a>
+        </div>
+    
+        <ul class="nav">
+            <% users.forEach((user) => {}) %>
+                <li class="nav-item"><%= user.username %></li> 
+            <% }); %>
+        </ul>
+
+
+    </div>
+
+</body>

@@ -49,6 +49,6 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-User.register({username: "dgarci23"}, "Password", (err, user) => {
+User.register({username: "egarcia"}, "Password", (err, user) => {
 
 });

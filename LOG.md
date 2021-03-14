@@ -37,3 +37,7 @@
 * Changing current client status
 * Refactor the frontend Code
     * New functions for inserting the client
+
+### Admin View
+* Able to enter to each user personal viewport
+* Able to create new users

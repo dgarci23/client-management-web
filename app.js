@@ -169,6 +169,23 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
 })
 
+app.get("/admin", (req, res) => {
+    if (req.isAuthenticated()) {
+
+        Users.findAll({privilege: "User"}, (err, usersFound) => {
+
+
+            res.render("admin", {users: usersFound});
+
+        });
+
+
+    } else {
+
+        res.redirect("/");
+    }
+})
+
 // POST
 app.post('/', (req, res) => {
 
@@ -180,12 +197,26 @@ app.post('/', (req, res) => {
         password: password
     });
 
+    let route = "/clients";
+
+    User.findOne({username: username}, (err, foundUser) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                if (foundUser.privilege === "Admin") {
+                    route = "/admin";
+                }
+            }
+        }
+    });
+
     req.login(user, (err) => {
 
         if (err) {
             console.log(err);
         } else {
-            passport.authenticate("local", {failureRedirect: "/", successRedirect: "/clients"})(req, res, ()=> {});
+            passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
         }
 
     });
