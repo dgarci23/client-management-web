@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/admin.css">
 
     <link rel="shortcut icon" href="../images/LogoCasaConfort.png" type="image/png">
     <title>Clientes Casa Confort</title>
@@ -25,32 +26,23 @@
             <a href="/logout"><i class="fas fa-power-off fa-3x logout-icon"></i></a>
         </div>
     
+        <nav class="nav justify-content-center">
+            
+        </nav>
+
         <div class="row">
-            <div class="col-md-6">
-                <div class="card current-client">
-                    <div class="card-body new-client-card">
-                        <div class="client-information"></div>
-                        <form>
-                            <div class="btn-group container">
-                                <button class="btn btn-success" id="new-client-btn"><i class="fas fa-plus"></i> Nuevo Cliente</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="col-md-3 user-list">
+                <form action="/admin" method="get"><button class="btn button btn-goback">Regresar</button></form>
+                <% users.forEach((user) => { %>
+                    <a href="" class="nav-link active"></a><button class="btn button user-button"><%= user.username %></button></a>
+                <% }); %>
             </div>
-            <div class="col-md-6">
-                <div class="card client-list">
-                    <div class="card-body other-clients"></div>
-                </div>
+            <div class="col-md-9 clients-container">
             </div>
+        </div>
+
         </div>
     </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-    <script src="../js/clients.js"></script>
+    <script src="../js/admin-users.js"></script>
 </body>
-</html>

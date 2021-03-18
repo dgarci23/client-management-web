@@ -164,6 +164,28 @@ app.get("/user", (req, res) => {
     }
 });
 
+app.get("/user/:user", (req, res) => {
+
+    if (req.isAuthenticated()) {
+
+        const username = req.params.user;
+
+        User.findOne({username: username}, (err, userFound) => {
+            if (err) {
+                console.log(err);
+            } else {
+
+                res.send(userFound);
+
+            }
+        })
+
+    } else {
+        res.redirect("/");
+    }
+
+})
+
 app.get("/logout", (req, res) => {
     req.logout();
     res.redirect("/");
@@ -175,7 +197,7 @@ app.get("/admin", (req, res) => {
         User.find({privilege: "User"}, (err, usersFound) => {
 
 
-            console.log(usersFound);
+            // console.log(usersFound);
 
             res.render("admin", {users: usersFound});
 
@@ -186,7 +208,24 @@ app.get("/admin", (req, res) => {
 
         res.redirect("/");
     }
-})
+});
+
+app.get('/admin/users', (req, res) => {
+    
+    if (req.isAuthenticated()) {
+
+        User.find({privilege: "User"}, (err, usersFound) => {
+
+            res.render("admin-users", {users: usersFound});
+        });
+
+    } else {
+        res.redirect("/");
+    }
+
+});
+
+app.get('/')
 
 // POST
 app.post('/', (req, res) => {

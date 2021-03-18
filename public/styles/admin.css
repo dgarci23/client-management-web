@@ -1,0 +1,43 @@
+.admin-menu {
+    text-align: center;
+}
+
+.button-container {
+    padding: 2%;
+}
+
+.button {
+    padding: 10%;
+    width: 100%;
+}
+
+
+.btn-desc {
+    margin-top: 20px;
+    font-family: "Roboto";
+}
+
+.other-client-btn {
+    width: 33%;
+    padding: 1%;
+}
+
+.app {
+    padding: 3%;
+}
+
+.btn-goback {
+    padding: 2%;
+    background-color: #AB1F75
+}
+
+.navbar-clients {
+    margin-bottom: 30px;
+}
+
+.user-list {
+    text-align: center;
+    margin-top: 5px;
+
+    margin-bottom: 50px;
+}

@@ -29,15 +29,21 @@
 * Implement logout
 * Styling to center buttons
 * Redirect when failed login
+* First admin view - routing
 
 ## To Do List
 * Data validation from GS Library
-* Possibility of refreshing page every certain time
-* Loading clients when the user logs in
 * Changing current client status
-* Refactor the frontend Code
-    * New functions for inserting the client
+* Branch logic
+* Modularization of ejs
+* Refactor code of the admin css
+* Refactor js code of the admin page
+* Design:
+    * Client Search
+    * Add Users
 
 ### Admin View
 * Able to enter to each user personal viewport
 * Able to create new users
+* Able to look for a client
+
