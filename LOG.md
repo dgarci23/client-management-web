@@ -36,6 +36,11 @@
 * Created the admin/users view
 * Frontend and backend for admin/users
 
+### March 20th, 2021
+* Created the admin/add view
+* Backend to add the new user to the database
+* Authentication Problem: [privileges](https://developerhandbook.com/passport.js/passport-role-based-authorisation-authentication/)
+
 ## To Do List
 * Data validation from GS Library
 * Changing current client status
@@ -45,6 +50,9 @@
     * Client Search
     * Add Users
 * Date: client registration date or client acceptance date
+* Authentication in admin page
+* Refactor app.js
+* Redirect after successful client added
 
 ### Admin View
 * Able to enter to each user personal viewport

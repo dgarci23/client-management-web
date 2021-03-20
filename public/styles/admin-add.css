@@ -1,0 +1,108 @@
+/* Body */
+body {
+    background: rgb(255,228,226);
+    background: linear-gradient(90deg, rgba(255,228,226,1) 0%, rgba(239,79,79,1) 72%, rgba(237,21,70,1) 100%);
+}
+
+/* App */
+.app {
+
+    /* Font */
+    font-family: "Roboto", "sans-serif";
+
+    /* Structure */
+    padding: 1%;
+    margin: 5% auto;
+
+    /* Size */
+    width: 400px;
+
+    /* Border */
+    border-radius: 15px;
+
+    /* Color */
+    background-color: #FFE4E2;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    color: #ED1546;
+
+    margin: 5px auto 10px auto;
+}
+
+.navbar-brand:hover {
+    color: #ED1546;
+}
+
+.navbar-logo {
+    height: 60px;
+}
+
+.logout-icon {
+    color:#ED1546;
+}
+
+.button:disabled {
+    opacity: 1;
+}
+
+.btn-group {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Input */
+.addUser-form {
+
+    /* Spacing */
+    margin-top: 15%;
+    padding-bottom: 75px;
+
+    /* Sizing */
+    width: 70%;  
+}
+
+.btn-addUser {
+
+    /* Structure */
+    margin-top: 20px;
+
+    /* Color */
+    background-color: #ef4f4f;
+    color: #FFF;
+
+    /* Sizing */
+    width: 100%;
+    height: 50px;
+
+}
+
+.name-input-prepend {
+    padding-left: 13px;
+    padding-right: 13px;
+}
+
+.input-group-text {
+    background-color: #ef4f4f; 
+    color: #FFF; 
+}
+
+.btn-goback {
+
+    /* Structure */
+    margin-top: 20px;
+    padding: 2%;
+
+    /* Color */
+    background-color: #AB1F75;
+    color: #FFF;
+
+    /* Sizing */
+    width: 100%;
+    height: 50px;
+
+}

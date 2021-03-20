@@ -225,7 +225,14 @@ app.get('/admin/users', (req, res) => {
 
 });
 
-app.get('/')
+app.get("/admin/add", (req, res) => {
+    
+    if (req.isAuthenticated()) {
+        res.render("admin-add");
+    }
+
+});
+
 
 // POST
 app.post('/', (req, res) => {
@@ -260,6 +267,26 @@ app.post('/', (req, res) => {
             }
     
         });
+    });
+
+
+});
+
+app.post("/admin/add", (req, res)=>{
+
+
+    User.register({username: req.body.username}, req.body.password, (err, user) => {
+        if (err) {
+            console.log(err);
+        } else {
+            User.updateOne({username: req.body.username}, {branch: req.body.branch, privilege: req.body.privilege}, (err)=>{
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render("admin");
+                }
+            });
+        }
     });
 
 
