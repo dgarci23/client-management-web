@@ -1,7 +1,19 @@
+/* App */
+.app {
+    padding: 3%;
+}
+
+/* Navbar */
+.navbar-clients {
+    margin-bottom: 30px;
+}
+
+/* Navigation Menu */
 .admin-menu {
     text-align: center;
 }
 
+/* Button classes */
 .button-container {
     padding: 2%;
 }
@@ -10,7 +22,6 @@
     padding: 10%;
     width: 100%;
 }
-
 
 .btn-desc {
     margin-top: 20px;
@@ -22,19 +33,12 @@
     padding: 1%;
 }
 
-.app {
-    padding: 3%;
-}
-
 .btn-goback {
     padding: 2%;
     background-color: #AB1F75
 }
 
-.navbar-clients {
-    margin-bottom: 30px;
-}
-
+/* User admin view */ 
 .user-list {
     text-align: center;
     margin-top: 5px;

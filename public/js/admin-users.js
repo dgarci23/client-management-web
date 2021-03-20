@@ -1,5 +1,6 @@
 document.querySelector(".user-list").addEventListener("click", (e) => {addUserClients(e)});
 
+// Event listener function when clicking for user information
 function addUserClients(e) {
 
     if (e.target.classList.contains("user-button")) {
@@ -12,22 +13,17 @@ function addUserClients(e) {
             const clientsContainer = document.querySelector(".clients-container");
             clientsContainer.innerHTML = "";
 
-            console.log(clients);
-
             clients.forEach((client) => {uiAddClient(client)});
 
             document.querySelectorAll(".user-button").forEach((button)=>{
                 button.style.backgroundColor = "#EF4F4F";
             });
-
             e.target.style.backgroundColor = "#0AAB9B";
-
-
-        })
+        });
     }    
-
 }
 
+// Gets the clients from the backend
 async function getUserInfo(username) {
 
     const response = await fetch(`/user/${username}`);
@@ -36,6 +32,7 @@ async function getUserInfo(username) {
 
 }
 
+// UI function for adding a client
 function uiAddClient(client) {
 
     const clientsContainer = document.querySelector(".clients-container");
@@ -44,6 +41,7 @@ function uiAddClient(client) {
 
 }
 
+// HTML for client element
 function otherClientsHTML(client) {
 
 

@@ -31,16 +31,20 @@
 * Redirect when failed login
 * First admin view - routing
 
+### March 17th, 2021
+* Created the admin view
+* Created the admin/users view
+* Frontend and backend for admin/users
+
 ## To Do List
 * Data validation from GS Library
 * Changing current client status
 * Branch logic
 * Modularization of ejs
-* Refactor code of the admin css
-* Refactor js code of the admin page
 * Design:
     * Client Search
     * Add Users
+* Date: client registration date or client acceptance date
 
 ### Admin View
 * Able to enter to each user personal viewport
