@@ -183,7 +183,7 @@ app.get("/user/:user", (req, res) => {
     } else {
         res.redirect("/");
     }
-
+    
 })
 
 app.get("/logout", (req, res) => {
@@ -193,14 +193,17 @@ app.get("/logout", (req, res) => {
 
 app.get("/admin", (req, res) => {
 
+    
     if (req.isAuthenticated()) {
 
+
         checkPrivilegeAdmin(req.user.username).then((access)=>{
+
             if (access) {
                 User.find({privilege: "User"}, (err, usersFound) => {
-
-                    res.render("admin", {users: usersFound});
-        
+                    
+                    res.render("admin");
+                    
                 });
             } else {
                 res.redirect("/");
@@ -208,6 +211,8 @@ app.get("/admin", (req, res) => {
         })
 
     } else {
+
+        console.log("no auth");
 
         res.redirect("/");
     }
@@ -251,48 +256,51 @@ app.get("/admin/add", (req, res) => {
     }
 });
 
+app.get('/admin/search', (req, res) => {
+
+    res.render("admin-search");
+
+});
+
 
 // POST
 app.post('/', (req, res) => {
-
-    if (req.isAuthenticated()){
-        const username = req.body.username;
-        const password = req.body.password;
-
-        const user = new User({
-            username: username,
-            password: password
-        });
-
-        let route = "/clients";
-
-        User.findOne({username: username}, (err, foundUser) => {
+    
+    const username = req.body.username;
+    const password = req.body.password;
+    
+    const user = new User({
+        username: username,
+        password: password
+    });
+    
+    let route = "/clients";
+    
+    User.findOne({username: username}, (err, foundUser) => {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                if (foundUser.privilege === "Admin") {
+                    route = "/admin";
+                }
+            }
+        }
+        
+        req.login(user, (err) => {
+            
             if (err) {
                 console.log(err);
             } else {
-                if (foundUser) {
-                    if (foundUser.privilege === "Admin") {
-                        route = "/admin";
-                    }
-                }
-            }
-
-            req.login(user, (err) => {
-        
-                if (err) {
-                    console.log(err);
-                } else {
-                    passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
-                }   
-            });
+                passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
+            }   
         });
-    } else {
-        res.redirect("/");
-    }
+    });
+
 });
 
 app.post("/admin/add", (req, res)=>{
-
+    
     if (req.isAuthenticated()) {
         checkPrivilegeAdmin(req.user.username).then((access)=>{
             if (access) {
@@ -316,6 +324,26 @@ app.post("/admin/add", (req, res)=>{
     }
 });
 
+app.use(express.json());
+app.post('/admin/search', (req, res)=> {
+
+    if (req.isAuthenticated()) {
+        checkPrivilegeAdmin(req.user.username).then((access) => {
+            if (access) {
+                Client.find({$or: [{name: {$regex: new RegExp(req.body.criteria, 'i')}}, {phone: {$regex: new RegExp(req.body.criteria, 'i')}}]}, (err, clientsFound)=>{
+
+                    res.send({clients: clientsFound});
+                
+                });
+            } else {
+                res.redirect("/");
+            }
+        })
+    } else {
+        res.redirect("/");
+    }
+});
+
 // Listening on port
 app.listen(process.env.PORT || 3000, () => console.log("Listening on port 3000."));
 
@@ -323,19 +351,12 @@ app.listen(process.env.PORT || 3000, () => console.log("Listening on port 3000."
 // Functions
 
 // Auth functions
-async function checkPrivilegeAdmin(req) {
+async function checkPrivilegeAdmin(username) {
     
-    let access = false;
-
-    await User.findOne({username: username}, (err, userFound) => {
-
-        if (err) {
-            console.log(err);
-        } else {
-            access = userFound && userFound.privilege === "Admin" ? true : false;
-        }
+    let access;
+    
+    return User.findOne({username: username}).exec().then(userFound => {
+        access = userFound && userFound.privilege === "Admin" ? true : false;
+        return access;
     });
-    
-    return access;
-    
 }

@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../styles/admin.css">
+    <link rel="stylesheet" href="../styles/admin-search.css">
 
     <link rel="shortcut icon" href="../images/LogoCasaConfort.png" type="image/png">
     <title>Clientes Casa Confort</title>
@@ -25,32 +26,40 @@
             <a href="#" class="navbar-brand"><img class="navbar-logo" src="../images/LogoCasaConfort.png" alt="Logo Casa Confort"> Casa Confort </a>
             <a href="/logout"><i class="fas fa-power-off fa-3x logout-icon"></i></a>
         </div>
-
-        <div class="row admin-menu">
-            <div class="col-md-4 button-container">
-                <form action="/admin/users" method="get">
-                    <button class="btn button">
-                        <i class="fas fa-chart-bar fa-6x"></i>
-                        <h5 class="btn-desc">Ver Vendedor</h5>
-                    </button>
-                </form>
+    
+    <div class="container searchContainer">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="input-group client-search-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search-input-group-text"><i class='fas fa-search fa-xs'></i></span>
+                    </div>
+                    <input type="text" class="form-control client-search-input" id="search" placeholder="Buscar cliente...">
+        
+                    
+                </div>
             </div>
-            <div class="col-md-4 button-container">
-                <form action="/admin/search" method="get">
-                    <button class="btn button">
-                        <i class="fas fa-search fa-6x"></i>
-                        <h5 class="btn-desc">Buscar clientes</h5>
-                    </button>
-                </form>
-            </div>
-            <div class="col-md-4 button-container">
-                <form action="/admin/add" method="get">
-                    <button class="btn button">
-                        <i class="fas fa-user-plus fa-6x"></i>
-                        <h5 class="btn-desc">Añadir vendedor</h5>
-                    </button>
-                </form>
+            <div class="col-md-3">
+                <form action="/admin" method="GET"><button type="" class="btn btn-goback">Regresar</button></form>
             </div>
         </div>
     </div>
+
+    <div class="container tableContainer">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre del Cliente</th>
+                    <th scope="col">Numero de Telefono</th>
+                    <th scope="col">Numero de Cedula/Pasaporte</th>
+                    <th scope="col">Usuario Asignado</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="../js/admin-search.js"></script>
+        
 </body>

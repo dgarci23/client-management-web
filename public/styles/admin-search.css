@@ -1,0 +1,30 @@
+.searchContainer {
+    width: 60%;
+
+    margin: 40px auto;
+
+}
+
+.table>tbody>tr>td, 
+.table>tbody>tr>th, 
+.table>tfoot>tr>td, 
+.table>tfoot>tr>th, 
+.table>thead>tr>td, 
+.table>thead>tr>th {
+  border:0;
+}
+
+.tableContainer {
+    padding: 0 5%;
+    background-color: #FFF;
+}
+
+.search-input-group-text {
+    background-color: #ef4f4f;
+    color: white;
+}
+
+.btn-goback{
+    color: white;
+    padding: 0.375rem 0.75rem;
+}

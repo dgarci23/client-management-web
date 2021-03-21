@@ -41,6 +41,20 @@
 * Backend to add the new user to the database
 * Authentication Problem: [privileges](https://developerhandbook.com/passport.js/passport-role-based-authorisation-authentication/)
 
+### March 21st, 2021
+* First solution for privilege authentication problem
+    * Use a user-declared function that looks at the MongoDB database to check the privilege of the user
+    * Problem: modularity (readibility of the code)
+    * Possible solution: create an independent file with the function and include req.isAuthenticated steps in it
+* Initial view for admin/search
+* Basic functionality for admin/search
+    * Mongoose RegExp to get all the clients with a determined name
+    * Frontend simple code to add information to a table
+* Add search criteria for phone number
+* Second solution for privilege authentication problem
+    * Use `.exec()` and return the entire `find()` promise
+    * Followed this Stack Overflow [post](https://stackoverflow.com/questions/53688901/javascript-async-await-not-waiting-for-mongoose-await)
+
 ## To Do List
 * Data validation from GS Library
 * Changing current client status
@@ -53,6 +67,8 @@
 * Authentication in admin page
 * Refactor app.js
 * Redirect after successful client added
+* Refactor auth code
+* Auth for admin/search
 
 ### Admin View
 * Able to enter to each user personal viewport
