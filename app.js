@@ -192,17 +192,20 @@ app.get("/logout", (req, res) => {
 })
 
 app.get("/admin", (req, res) => {
+
     if (req.isAuthenticated()) {
 
-        User.find({privilege: "User"}, (err, usersFound) => {
+        checkPrivilegeAdmin(req.user.username).then((access)=>{
+            if (access) {
+                User.find({privilege: "User"}, (err, usersFound) => {
 
-
-            // console.log(usersFound);
-
-            res.render("admin", {users: usersFound});
-
-        });
-
+                    res.render("admin", {users: usersFound});
+        
+                });
+            } else {
+                res.redirect("/");
+            }
+        })
 
     } else {
 
@@ -214,9 +217,15 @@ app.get('/admin/users', (req, res) => {
     
     if (req.isAuthenticated()) {
 
-        User.find({privilege: "User"}, (err, usersFound) => {
+        checkPrivilegeAdmin(req.user.username).then((access)=>{
+            if (access){
+                User.find({privilege: "User"}, (err, usersFound) => {
 
-            res.render("admin-users", {users: usersFound});
+                    res.render("admin-users", {users: usersFound});
+                });
+            } else {
+                res.redirect("/");
+            }
         });
 
     } else {
@@ -228,69 +237,105 @@ app.get('/admin/users', (req, res) => {
 app.get("/admin/add", (req, res) => {
     
     if (req.isAuthenticated()) {
-        res.render("admin-add");
-    }
+        
+        checkPrivilegeAdmin(req.user.username).then((access)=>{
+            if (access) {
+                res.render("admin-add");
+            } else {
+                res.redirect("/");
+            }
+        });
 
+    } else {
+        res.render("/");
+    }
 });
 
 
 // POST
 app.post('/', (req, res) => {
 
-    const username = req.body.username;
-    const password = req.body.password;
+    if (req.isAuthenticated()){
+        const username = req.body.username;
+        const password = req.body.password;
 
-    const user = new User({
-        username: username,
-        password: password
-    });
+        const user = new User({
+            username: username,
+            password: password
+        });
 
-    let route = "/clients";
+        let route = "/clients";
 
-    User.findOne({username: username}, (err, foundUser) => {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUser) {
-                if (foundUser.privilege === "Admin") {
-                    route = "/admin";
-                }
-            }
-        }
-
-        req.login(user, (err) => {
-    
+        User.findOne({username: username}, (err, foundUser) => {
             if (err) {
                 console.log(err);
             } else {
-                passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
+                if (foundUser) {
+                    if (foundUser.privilege === "Admin") {
+                        route = "/admin";
+                    }
+                }
             }
-    
+
+            req.login(user, (err) => {
+        
+                if (err) {
+                    console.log(err);
+                } else {
+                    passport.authenticate("local", {successRedirect: route, failureRedirect: "/"})(req, res);
+                }   
+            });
         });
-    });
-
-
+    } else {
+        res.redirect("/");
+    }
 });
 
 app.post("/admin/add", (req, res)=>{
 
-
-    User.register({username: req.body.username}, req.body.password, (err, user) => {
-        if (err) {
-            console.log(err);
-        } else {
-            User.updateOne({username: req.body.username}, {branch: req.body.branch, privilege: req.body.privilege}, (err)=>{
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.render("admin");
-                }
-            });
-        }
-    });
-
-
+    if (req.isAuthenticated()) {
+        checkPrivilegeAdmin(req.user.username).then((access)=>{
+            if (access) {
+                User.register({username: req.body.username}, req.body.password, (err, user) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        User.updateOne({username: req.body.username}, {branch: req.body.branch, privilege: req.body.privilege}, (err)=>{
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                res.render("admin");
+                            }
+                        });
+                    }
+                });
+            } else {
+                res.redirect("/");
+            }
+        })
+    }
 });
 
 // Listening on port
 app.listen(process.env.PORT || 3000, () => console.log("Listening on port 3000."));
+
+
+// Functions
+
+// Auth functions
+async function checkPrivilegeAdmin(req) {
+    
+    let access = false;
+
+    await User.findOne({username: username}, (err, userFound) => {
+
+        if (err) {
+            console.log(err);
+        } else {
+            access = userFound && userFound.privilege === "Admin" ? true : false;
+        }
+    });
+    
+    return access;
+    
+}
