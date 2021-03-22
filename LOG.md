@@ -55,10 +55,9 @@
     * Use `.exec()` and return the entire `find()` promise
     * Followed this Stack Overflow [post](https://stackoverflow.com/questions/53688901/javascript-async-await-not-waiting-for-mongoose-await)
 * Add authentication to /user/:user route - only admin
+* Commented code on routes
 
 ## To Do List
-* Data validation from GS Library
-* Changing current client status
 * Branch logic
 * Modularization of ejs
 * Date: client registration date or client acceptance date
