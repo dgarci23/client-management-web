@@ -1,3 +1,10 @@
+/* Return button */
+.btn-goback{
+    color: white;
+    padding: 0.375rem 0.75rem;
+}
+
+/* search bar */
 .searchContainer {
     width: 60%;
 
@@ -5,6 +12,12 @@
 
 }
 
+.search-input-group-text {
+    background-color: #ef4f4f;
+    color: white;
+}
+
+/* Table */
 .table>tbody>tr>td, 
 .table>tbody>tr>th, 
 .table>tfoot>tr>td, 
@@ -19,12 +32,3 @@
     background-color: #FFF;
 }
 
-.search-input-group-text {
-    background-color: #ef4f4f;
-    color: white;
-}
-
-.btn-goback{
-    color: white;
-    padding: 0.375rem 0.75rem;
-}

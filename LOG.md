@@ -54,21 +54,16 @@
 * Second solution for privilege authentication problem
     * Use `.exec()` and return the entire `find()` promise
     * Followed this Stack Overflow [post](https://stackoverflow.com/questions/53688901/javascript-async-await-not-waiting-for-mongoose-await)
+* Add authentication to /user/:user route - only admin
 
 ## To Do List
 * Data validation from GS Library
 * Changing current client status
 * Branch logic
 * Modularization of ejs
-* Design:
-    * Client Search
-    * Add Users
 * Date: client registration date or client acceptance date
-* Authentication in admin page
 * Refactor app.js
-* Redirect after successful client added
 * Refactor auth code
-* Auth for admin/search
 
 ### Admin View
 * Able to enter to each user personal viewport

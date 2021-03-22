@@ -75,12 +75,15 @@ const Client = mongoose.model("Client", clientSchema);
 
 // Routes
 // GET
+// Main route - login and then main page depending on privilege
 app.get('/', (req, res) => {
 
     res.render("login");
 
 });
 
+// Main page for privilege: User
+// Allows for users to see their clients information
 app.get("/clients", (req, res) => {
     if (req.isAuthenticated()) {
         
@@ -91,6 +94,37 @@ app.get("/clients", (req, res) => {
     }
 });
 
+// Main page for privilege: Admin
+// Allows admin to check on users, add new users and track clients
+app.get("/admin", (req, res) => {
+
+    
+    if (req.isAuthenticated()) {
+
+
+        checkPrivilegeAdmin(req.user.username).then((access)=>{
+
+            if (access) {
+                User.find({privilege: "User"}, (err, usersFound) => {
+                    
+                    res.render("admin");
+                    
+                });
+            } else {
+                res.redirect("/");
+            }
+        })
+
+    } else {
+
+        console.log("no auth");
+
+        res.redirect("/");
+    }
+});
+
+// Adds new client to the /clients view for a user
+// GoogleSheets coordination
 app.get('/new', (req, res) => {
     
     if (req.isAuthenticated()) {
@@ -138,6 +172,8 @@ app.get('/new', (req, res) => {
     }
 });
 
+// Gets the user information - main client and side clients
+// Fetch when DOM loaded in /clients
 app.get("/user", (req, res) => {
 
     if (req.isAuthenticated()) {
@@ -164,60 +200,43 @@ app.get("/user", (req, res) => {
     }
 });
 
+// Gets the user information
+// Does not requested current user to be in session
 app.get("/user/:user", (req, res) => {
 
     if (req.isAuthenticated()) {
 
-        const username = req.params.user;
-
-        User.findOne({username: username}, (err, userFound) => {
-            if (err) {
-                console.log(err);
-            } else {
-
-                res.send(userFound);
-
-            }
-        })
-
-    } else {
-        res.redirect("/");
-    }
-    
-})
-
-app.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
-})
-
-app.get("/admin", (req, res) => {
-
-    
-    if (req.isAuthenticated()) {
-
-
         checkPrivilegeAdmin(req.user.username).then((access)=>{
-
             if (access) {
-                User.find({privilege: "User"}, (err, usersFound) => {
-                    
-                    res.render("admin");
-                    
-                });
+                const username = req.params.user;
+
+                User.findOne({username: username}, (err, userFound) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+        
+                        res.send(userFound);
+        
+                    }
+                })
             } else {
                 res.redirect("/");
             }
         })
 
     } else {
-
-        console.log("no auth");
-
         res.redirect("/");
     }
-});
+    
+})
 
+// Logs out of the session
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+})
+
+// Admin view - Gets the information on the users and their activity
 app.get('/admin/users', (req, res) => {
     
     if (req.isAuthenticated()) {
@@ -239,6 +258,7 @@ app.get('/admin/users', (req, res) => {
 
 });
 
+// Admin view - Adds new users to the database
 app.get("/admin/add", (req, res) => {
     
     if (req.isAuthenticated()) {
@@ -256,6 +276,7 @@ app.get("/admin/add", (req, res) => {
     }
 });
 
+// Admin view - Search for clients in the database
 app.get('/admin/search', (req, res) => {
 
     res.render("admin-search");
@@ -264,6 +285,7 @@ app.get('/admin/search', (req, res) => {
 
 
 // POST
+// Logs in the user and checks the privilege - redirects accordingly
 app.post('/', (req, res) => {
     
     const username = req.body.username;
@@ -299,6 +321,7 @@ app.post('/', (req, res) => {
 
 });
 
+// Post request for new user
 app.post("/admin/add", (req, res)=>{
     
     if (req.isAuthenticated()) {
@@ -324,6 +347,7 @@ app.post("/admin/add", (req, res)=>{
     }
 });
 
+// Post request for client in the DB
 app.use(express.json());
 app.post('/admin/search', (req, res)=> {
 
@@ -344,12 +368,12 @@ app.post('/admin/search', (req, res)=> {
     }
 });
 
+// LISTENING
 // Listening on port
 app.listen(process.env.PORT || 3000, () => console.log("Listening on port 3000."));
 
 
-// Functions
-
+// FUNCTIONS
 // Auth functions
 async function checkPrivilegeAdmin(username) {
     
