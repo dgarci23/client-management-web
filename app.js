@@ -134,7 +134,7 @@ app.get('/new', (req, res) => {
             if (data) {
                 const client = new Client({
                     name: data[1],
-                    timestamp: data[0].toString(),
+                    timestamp:,
                     doc_id: data[2],
                     phone: data[3],
                     type: data[4],

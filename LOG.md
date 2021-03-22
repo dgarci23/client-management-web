@@ -56,16 +56,3 @@
     * Followed this Stack Overflow [post](https://stackoverflow.com/questions/53688901/javascript-async-await-not-waiting-for-mongoose-await)
 * Add authentication to /user/:user route - only admin
 * Commented code on routes
-
-## To Do List
-* Branch logic
-* Modularization of ejs
-* Date: client registration date or client acceptance date
-* Refactor app.js
-* Refactor auth code
-
-### Admin View
-* Able to enter to each user personal viewport
-* Able to create new users
-* Able to look for a client
-
