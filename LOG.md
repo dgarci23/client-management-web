@@ -56,3 +56,14 @@
     * Followed this Stack Overflow [post](https://stackoverflow.com/questions/53688901/javascript-async-await-not-waiting-for-mongoose-await)
 * Add authentication to /user/:user route - only admin
 * Commented code on routes
+
+
+
+
+## TO-DO
+- [ ] Sanitize user inputs
+- [ ] Manage extreme cases
+    - [ ] Google Sheets
+    - [ ] Log In
+    - [ ] Database changes
+- [ ] MVC Structure

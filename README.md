@@ -18,7 +18,7 @@ Both frontend and backend are completely built using JavaScript.
     * MongoDB
     * Hosted on AtlasCloud
 
-## What was the idea of this project?
+## What was the idea behind this project?
 Solve a business problem with a scalable solution using an already existing infrastructure built in Google Sheets. Authentication and Privileges need to be established to separate employees from managerial positions.
 
 ### A more complete on the logs of the project can be found in the file LOG.md

@@ -1,8 +1,8 @@
 // Load event listener for typing on the search bar
 const table = document.getElementById("table-body");
 document.getElementById("search").addEventListener("keyup", (e)=>{
-    
     if (e.target.value.length > 3) {
+        console.log("Ees");
         getClients(e.target.value).then((clients)=>{
 
             clients = clients.clients;
